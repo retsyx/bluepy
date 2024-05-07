@@ -579,7 +579,13 @@ class Peripheral(BluepyHelper):
         self._mgmtCmd("unpair")
 
     def pair(self):
-        self._mgmtCmd("pair")
+        self._writeCmd("pair\n")
+        resp = self._getResp('mgmt')
+        if resp['code'][0] != 'success':
+            raise BTLEManagementError("Pair failed.")
+        addr = ':'.join([f'{b:02X}' for b in resp['addr'][0]])
+        addr_type = resp['type'][0]
+        return addr, addr_type
 
     def getMTU(self):
         return self._mtu

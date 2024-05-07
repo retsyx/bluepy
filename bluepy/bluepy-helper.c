@@ -1495,7 +1495,12 @@ static void pair_device_complete(uint8_t status, uint16_t length,
         return;
     }
 
-    resp_mgmt(err_SUCCESS);
+    const struct mgmt_addr_info * rp = param;
+
+    resp_begin(rsp_MGMT);
+    send_sym(tag_ERRCODE, err_SUCCESS);
+    send_addr(rp);
+    resp_end();
 }
 
 static void cmd_pair(int argcp, char **argvp)
