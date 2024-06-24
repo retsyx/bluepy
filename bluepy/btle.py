@@ -575,6 +575,10 @@ class Peripheral(BluepyHelper):
         self._writeCmd("secu %s\n" % level)
         return self._getResp('stat')
 
+    def setBondable(self, enable):
+        mode = "on" if enable else "off"
+        self._mgmtCmd(f'pairable {mode}')
+
     def unpair(self):
         self._mgmtCmd("unpair")
 
